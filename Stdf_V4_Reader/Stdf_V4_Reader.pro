@@ -10,6 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Stdf_V4_Reader
 TEMPLATE = app
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += \ 
     stdf_api/stdf_v4_api.cpp \
