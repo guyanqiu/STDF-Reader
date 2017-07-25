@@ -6,6 +6,7 @@
 #define _DEBUG_API_H_
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #ifndef __FUNCDNAME__
 #define __FUNCDNAME__ __func__
@@ -23,17 +24,18 @@ class DebugMessage
 {
 public:
     virtual void show_message(std::ostream& os){ os<<"Error."<<std::endl; }
-    DebugMessage(){};
-    virtual ~DebugMessage(){};
+    DebugMessage(){}
+    virtual ~DebugMessage(){}
 };
 
 class IndexOverRangeError : public DebugMessage
 {
 private:
-    const char* m_function_name;
-    unsigned int m_index_range, m_current_index;
-    char* m_file_name;
     int m_line_number;
+    unsigned int m_index_range, m_current_index;
+    std::string m_function_name;
+    std::string m_file_name;
+
 public:
     IndexOverRangeError(unsigned int index_range, unsigned int current_index, 
     const char* file_name,const char* function_name, const int line_number);
@@ -45,10 +47,9 @@ public:
 class MemoryAllocatedError  : public DebugMessage
 {
 private:
-    const char* m_function_name;
-    unsigned int m_index_range, m_current_index;
-    char* m_file_name;
     int m_line_number;
+    std::string m_function_name;
+    std::string m_file_name;
 
 public:
     MemoryAllocatedError(const char* file_name,const char* function_name, const int line_number);
