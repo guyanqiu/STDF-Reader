@@ -9,3 +9,6 @@
 
 ## 2017-07-25
 * Refactoring the DebugMessage Codes
+
+## 2017-07-26
+* Refactoring the STDF Record Show Codes

@@ -3995,6 +3995,12 @@ const char* StdfFTR::get_alarm_id() const
     return impl->ALARM_ID.c_str();
 }
 
+const char* StdfFTR::get_program_text() const
+{
+    if(impl->PROG_TXT.empty()) return nullptr;
+    return impl->PROG_TXT.c_str();
+}
+
 const char* StdfFTR::get_result_text() const
 {
     if(impl->RSLT_TXT.empty()) return nullptr;
@@ -4189,6 +4195,11 @@ void StdfFTR::set_alarm_id(const char* id)
 void StdfFTR::set_result_text(const char* text)
 {
     if(text) impl->RSLT_TXT.assign(text);
+}
+
+void StdfFTR::set_program_text(const char* text)
+{
+    if(text) impl->PROG_TXT.assign(text);
 }
 
 void StdfFTR::set_pattern_genertor_number(unsigned char number)

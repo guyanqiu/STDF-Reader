@@ -157,6 +157,7 @@ enum ModeCode : char
     Automatic_Edge_Lock = 'A',
     Checker             = 'C',
     Development         = 'D',
+    Debug               = 'D',
     Engineering         = 'E',
     Maintenance         = 'M',
     Production_Test     = 'P',
@@ -1155,6 +1156,7 @@ public:
     const char* get_test_text() const;
     const char* get_alarm_id() const;
     const char* get_result_text() const;
+    const char* get_program_text() const;
     unsigned char get_pattern_genertor_number() const;
 	unsigned short get_bitmap_data_count() const;
     unsigned char get_bitmap_data(unsigned short index) const;
@@ -1182,6 +1184,7 @@ public:
     void set_test_text(const char* text);
     void set_alarm_id(const char* id);
     void set_result_text(const char* text);
+    void set_program_text(const char* text);
     void set_pattern_genertor_number(unsigned char number);
     void set_bitmap_data(unsigned short index, unsigned char bit_data);
 
