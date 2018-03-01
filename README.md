@@ -12,3 +12,6 @@
 
 ## 2017-07-26
 * Refactoring the STDF Record Show Codes
+
+## 2018-03-01
+* Add Part ID for PTRs table
