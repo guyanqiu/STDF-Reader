@@ -213,6 +213,18 @@ unsigned int STDF_FILE::get_count(STDF_TYPE type)
 	return count;
 }
 
+unsigned int STDF_FILE::get_total_count()
+{
+    return Record_Vector.size();
+}
+
+StdfRecord* STDF_FILE::get_record(unsigned int index)
+{
+    StdfRecord* record = nullptr;
+    if(index < Record_Vector.size()) record = Record_Vector[index];
+    return record;
+}
+
 StdfRecord* STDF_FILE::get_record(STDF_TYPE type, unsigned int index)
 {
 	StdfRecord* record = nullptr;

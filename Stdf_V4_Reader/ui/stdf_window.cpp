@@ -1127,7 +1127,7 @@ void MainWindow::ShowStdfPTR()
 {
 	QStringList col_labels;
 
-	unsigned int col_count = 20;
+    unsigned int col_count = 21;
     unsigned int rec_count = stdf_file->get_count(PTR_TYPE);
 
     QProgressBar progress_bar(ui->RecordTableWidget);
@@ -1139,6 +1139,7 @@ void MainWindow::ShowStdfPTR()
 	ui->RecordTableWidget->setColumnCount(col_count);
     ui->RecordTableWidget->setRowCount(0);
 	
+    col_labels<<"Part ID";
 	col_labels<<"TEST_NUM";
 	col_labels<<"HEAD_NUM";
     col_labels<<"SITE_NUM";
@@ -1160,35 +1161,62 @@ void MainWindow::ShowStdfPTR()
 	col_labels<<"LO_SPEC";
 	col_labels<<"HI_SPEC";
 
-    for(unsigned int i = 0; i < rec_count; i++)
+    unsigned int record_count = stdf_file->get_total_count();
+    unsigned int index_count  = 0;
+    std::vector<StdfPTR*> temp_ptrs;
+    for(unsigned int n = 0; n < record_count; n++)
     {
-        ui->RecordTableWidget->insertRow(i);
-        StdfPTR* record = (StdfPTR*)(stdf_file->get_record(PTR_TYPE, i));
+        StdfRecord* record = stdf_file->get_record(n);
+        if(record->type() == PIR_TYPE)
+        {
+            temp_ptrs.clear();
+            continue;
+        }
+        if(record->type() == PRR_TYPE)
+        {
+            unsigned int ptr_count = temp_ptrs.size();
+            StdfPRR* temp_prr = static_cast<StdfPRR*>(record);
+            const char* part_id = temp_prr->get_part_id();
+            for(unsigned int i = 0; i < ptr_count; i++)
+            {
+                ui->RecordTableWidget->insertRow(index_count);
+                StdfPTR* record = temp_ptrs[i];
 
-        int col = 0;
-        table_set_value(i, col++, record->get_test_number());         // TEST_NUM
-        table_set_value(i, col++, record->get_head_number());         // HEAD_NUM
-        table_set_value(i, col++, record->get_site_number());         // SITE_NUM
-        table_set_flag(i, col++, record->get_test_flag());            // TEST_FLG
-        table_set_flag(i, col++, record->get_parametric_test_flag()); // PARM_FLG
-        table_set_value(i, col++, record->get_result());              // RESULT
-        table_set_value(i, col++, record->get_test_text());           // TEST_TXT
-        table_set_value(i, col++, record->get_alarm_id());            // ALARM_ID
-        table_set_value(i, col++, record->get_optional_data_flag());  // OPT_FLAG
-        table_set_value(i, col++, record->get_result_exponent());     // RES_SCAL
-        table_set_value(i, col++, record->get_lowlimit_exponent());   // LLM_SCAL
-        table_set_value(i, col++, record->get_highlimit_exponent());  // HLM_SCAL
-        table_set_value(i, col++, record->get_low_limit());           // LO_LIMIT
-        table_set_value(i, col++, record->get_high_limit());          // HI_LIMIT
-        table_set_value(i, col++, record->get_unit());                // UNITS
-        table_set_value(i, col++, record->get_result_format());       // C_RESFMT
-        table_set_value(i, col++, record->get_lowlimit_format());     // C_LLMFMT
-        table_set_value(i, col++, record->get_highlimit_format());    // C_HLMFMT
-        table_set_value(i, col++, record->get_low_spec());            // LO_SPEC
-        table_set_value(i, col++, record->get_high_spec());           // HI_SPEC
+                int col = 0;
+                table_set_value(index_count, col++, part_id);
+                table_set_value(index_count, col++, record->get_test_number());         // TEST_NUM
+                table_set_value(index_count, col++, record->get_head_number());         // HEAD_NUM
+                table_set_value(index_count, col++, record->get_site_number());         // SITE_NUM
+                table_set_flag (index_count, col++, record->get_test_flag());            // TEST_FLG
+                table_set_flag (index_count, col++, record->get_parametric_test_flag()); // PARM_FLG
+                table_set_value(index_count, col++, record->get_result());              // RESULT
+                table_set_value(index_count, col++, record->get_test_text());           // TEST_TXT
+                table_set_value(index_count, col++, record->get_alarm_id());            // ALARM_ID
+                table_set_flag(index_count, col++, record->get_optional_data_flag());   // OPT_FLAG
+                table_set_value(index_count, col++, record->get_result_exponent());     // RES_SCAL
+                table_set_value(index_count, col++, record->get_lowlimit_exponent());   // LLM_SCAL
+                table_set_value(index_count, col++, record->get_highlimit_exponent());  // HLM_SCAL
+                table_set_value(index_count, col++, record->get_low_limit());           // LO_LIMIT
+                table_set_value(index_count, col++, record->get_high_limit());          // HI_LIMIT
+                table_set_value(index_count, col++, record->get_unit());                // UNITS
+                table_set_value(index_count, col++, record->get_result_format());       // C_RESFMT
+                table_set_value(index_count, col++, record->get_lowlimit_format());     // C_LLMFMT
+                table_set_value(index_count, col++, record->get_highlimit_format());    // C_HLMFMT
+                table_set_value(index_count, col++, record->get_low_spec());            // LO_SPEC
+                table_set_value(index_count, col++, record->get_high_spec());           // HI_SPEC
 
-        progress_bar.setValue(i);
+                progress_bar.setValue(index_count);
+                index_count++;
+            }
+            continue;
+        }
+        if(record->type() == PTR_TYPE)
+        {
+            temp_ptrs.push_back(static_cast<StdfPTR*>(record));
+            continue;
+        }
     }
+
 	ui->RecordTableWidget->setHorizontalHeaderLabels(col_labels);
 	ui->RecordTableWidget->resizeColumnsToContents();
 }
@@ -1281,7 +1309,7 @@ void MainWindow::ShowStdfMPR()
         table_set_value(i, col++, return_result_list);               // RTN_RSLT
         table_set_value(i, col++, record->get_test_text());          // TEST_TXT
         table_set_value(i, col++, record->get_alarm_id());           // ALARM_ID
-        table_set_value(i, col++, record->get_optional_data_flag()); // OPT_FLAG
+        table_set_flag(i, col++, record->get_optional_data_flag());  // OPT_FLAG
         table_set_value(i, col++, record->get_result_exponent());    // RES_SCAL
         table_set_value(i, col++, record->get_lowlimit_exponent());  // LLM_SCAL
         table_set_value(i, col++, record->get_highlimit_exponent()); // HLM_SCAL

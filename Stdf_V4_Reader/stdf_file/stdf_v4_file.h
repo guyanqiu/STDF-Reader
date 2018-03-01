@@ -32,6 +32,8 @@ public:
 	const char* get_name(STDF_TYPE type);
 	unsigned int get_count(STDF_TYPE type);
 	StdfRecord* get_record(STDF_TYPE type, unsigned int index);
+    unsigned int get_total_count();
+    StdfRecord* get_record(unsigned int index);
 
 private:
 	void append_record_by_type(StdfRecord* record);
