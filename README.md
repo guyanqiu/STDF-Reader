@@ -17,4 +17,4 @@
 * Add Part ID for PTRs table
 
 ## 2019-06-17
-* Optimized the code ablout QTableWidgets
+* Optimized the code about QTableWidgets
