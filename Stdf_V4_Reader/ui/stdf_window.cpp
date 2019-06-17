@@ -198,7 +198,6 @@ void MainWindow::on_SaveButton_clicked()
     }
 }
 
-
 void MainWindow::UpdateUi()
 {
     if(stdf_file)
