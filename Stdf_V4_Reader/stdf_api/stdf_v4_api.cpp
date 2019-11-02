@@ -424,7 +424,7 @@ const char* StdfMIR::get_package_type() const
 const char* StdfMIR::get_family_id() const
 {
     if(impl->FAMLY_ID.empty()) return nullptr;
-    return impl->FACIL_ID.c_str();
+    return impl->FAMLY_ID.c_str();
 }
 
 const char* StdfMIR::get_date_code() const
